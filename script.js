@@ -1,7 +1,4 @@
 //Returns 'rock', paper' or 'scissors' randomly
-let win;
-let lose;
-
 function computerPlay() {
 
   switch (Math.ceil(Math.random() * 3)) {
@@ -19,14 +16,16 @@ function computerPlay() {
   }
 }
 
+//Plays a round and returns a corresponding string
 function playRound(playerSelection, computerSelection) {
   playerSelection = playerSelection.toLowerCase();
 
-  win = playerSelection + " beats " + computerSelection + ". You win!";
-  lose = computerSelection + " beats " + playerSelection + ". You lose...";
+  let win = "win";
+  let lose = "lose";
+  let draw = "draw";
 
   if (playerSelection === computerSelection) {
-    return "Two " + playerSelection + "s. It's a draw!";
+    return draw;
   }
 
   else if (playerSelection === "rock") {
@@ -41,23 +40,37 @@ function playRound(playerSelection, computerSelection) {
 
 }
 
+//Plays a number of rounds until lives are depleted
 function game() {
   let playerLives = 5;
   let computerLives = 5;
 
   while (playerLives > 0 && computerLives > 0) {
-    if (playRound( prompt("Choose wisely...", "Rock"),  computerPlay() ) === win) {
-      computerLives--;
-      console.log(win);
+
+    let playerSelection = prompt("Choose wisely...", "Rock");
+    let computerSelection = computerPlay();
+    let result = playRound(playerSelection, computerSelection);
+
+    switch (result) {
+      case "win":
+        console.log("Your " + playerSelection + " beats their " + computerSelection +
+          " - you win!");
+          computerLives--;
+        break;
+      case "lose":
+        console.log("Their " + computerSelection + " beats your " + playerSelection +
+          " - you lose...");
+          playerLives--;
+        break;
+      case "draw":
+        console.log("Two " + playerSelection + "s - nobody wins!");
+        break;
     }
-    else {
-      playerLives--;
-      console.log(lose);
-    }
+    console.log("Player: " + (5-computerLives) + " Computer: " + (5 - playerLives));
   }
 
-  if (computerLives === 0) {console.log("You are victorious!");}
-  else {console.log("You have been defeated...");}
+  if (computerLives === 0) { console.log("You are victorious!"); }
+  else { console.log("You have been defeated..."); }
 }
 
 game();
